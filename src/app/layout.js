@@ -3,8 +3,6 @@ import "./globals.css";
 import { getSettings } from "@/lib/data";
 import { withPlaceholderFallback } from "@/lib/constants";
 import { LanguageProvider } from "@/context/LanguageContext";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import StructuredData from "@/components/StructuredData";
 
 const geistSans = Geist({
@@ -46,11 +44,7 @@ export default async function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <StructuredData settings={settings} />
-        <LanguageProvider>
-          <Header companyName={settings.company_name} logoUrl={settings.logo_url} />
-          <main className="flex-1">{children}</main>
-          <Footer settings={settings} />
-        </LanguageProvider>
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );
