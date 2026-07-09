@@ -15,7 +15,15 @@ create table if not exists settings (
   address text,
   lat double precision,
   lng double precision,
-  working_hours text,
+  working_hours jsonb not null default '{
+    "mon": {"closed": false, "open": "09:00", "close": "17:00"},
+    "tue": {"closed": false, "open": "09:00", "close": "17:00"},
+    "wed": {"closed": false, "open": "09:00", "close": "17:00"},
+    "thu": {"closed": false, "open": "09:00", "close": "17:00"},
+    "fri": {"closed": true,  "open": null,    "close": null},
+    "sat": {"closed": false, "open": "09:00", "close": "17:00"},
+    "sun": {"closed": true,  "open": null,    "close": null}
+  }'::jsonb,
   whatsapp_number text,
   facebook_url text,
   instagram_url text,

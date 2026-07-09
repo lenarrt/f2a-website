@@ -1,4 +1,8 @@
+import { toSchemaOpeningHours } from "@/lib/workingHours";
+
 export default function StructuredData({ settings }) {
+  const openingHours = toSchemaOpeningHours(settings.working_hours);
+
   const data = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -22,6 +26,7 @@ export default function StructuredData({ settings }) {
           }
         : undefined,
     sameAs: [settings.facebook_url, settings.instagram_url].filter(Boolean),
+    openingHoursSpecification: openingHours.length ? openingHours : undefined,
   };
 
   return (

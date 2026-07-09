@@ -14,3 +14,10 @@
 
 That's it — no other configuration is required. Everything else (company info,
 categories, products, images) is managed from the `/admin` panel after deploy.
+
+## Migrations
+
+`schema.sql` reflects the current schema and is what a fresh project should run.
+If you already ran an earlier version of `schema.sql`, apply any new files under
+`migrations/` (in order) to bring an existing database up to date — each one is a
+one-time SQL script to run in the SQL Editor.

@@ -4,6 +4,7 @@ import { Phone, Mail, Clock, MapPin, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { FacebookIcon, InstagramIcon } from "@/components/icons/SocialIcons";
 import { googleMapsUrl, googleMapsEmbedUrl, whatsappUrl, telUrl } from "@/lib/maps";
+import { DAYS_ORDER } from "@/lib/workingHours";
 
 export default function ContactSection({ settings }) {
   const { t } = useLanguage();
@@ -34,9 +35,25 @@ export default function ContactSection({ settings }) {
               </li>
             )}
             {settings.working_hours && (
-              <li className="flex items-center gap-2">
-                <Clock className="h-4 w-4 shrink-0 text-orange-600" />
-                <span>{settings.working_hours}</span>
+              <li className="flex items-start gap-2">
+                <Clock className="h-4 w-4 shrink-0 text-orange-600 mt-0.5" />
+                <ul>
+                  {DAYS_ORDER.map((day) => {
+                    const hours = settings.working_hours[day];
+                    return (
+                      <li key={day} className="flex gap-3">
+                        <span className="w-20 shrink-0 text-neutral-500">
+                          {t.days[day]}
+                        </span>
+                        <span>
+                          {hours?.closed
+                            ? t.contact.closed
+                            : `${hours?.open} - ${hours?.close}`}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
               </li>
             )}
             {settings.address && (

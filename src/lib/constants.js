@@ -1,3 +1,5 @@
+import { DEFAULT_WORKING_HOURS } from "@/lib/workingHours";
+
 // Placeholder content shown until the real F2A details are entered in /admin.
 export const PLACEHOLDER_SETTINGS = {
   company_name: "F2A",
@@ -10,7 +12,7 @@ export const PLACEHOLDER_SETTINGS = {
   address: "Rruga Kryesore, Prishtine, Kosove",
   lat: 42.6629,
   lng: 21.1655,
-  working_hours: "Hene - Premte: 08:00 - 17:00, Shtune: 09:00 - 14:00",
+  working_hours: DEFAULT_WORKING_HOURS,
   whatsapp_number: null,
   facebook_url: null,
   instagram_url: null,

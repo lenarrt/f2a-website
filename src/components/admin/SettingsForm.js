@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { createClient } from "@/lib/supabase/client";
+import { DEFAULT_WORKING_HOURS } from "@/lib/workingHours";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import WorkingHoursEditor from "@/components/admin/WorkingHoursEditor";
 
 const FIELDS = [
   ["company_name", "companyName", "text"],
@@ -12,7 +14,6 @@ const FIELDS = [
   ["phone", "phone", "text"],
   ["email", "email", "text"],
   ["address", "address", "text"],
-  ["working_hours", "workingHours", "text"],
   ["lat", "latitude", "number"],
   ["lng", "longitude", "number"],
   ["whatsapp_number", "whatsappNumber", "text"],
@@ -30,7 +31,7 @@ export default function SettingsForm({ initialSettings }) {
     phone: initialSettings?.phone ?? "",
     email: initialSettings?.email ?? "",
     address: initialSettings?.address ?? "",
-    working_hours: initialSettings?.working_hours ?? "",
+    working_hours: initialSettings?.working_hours ?? DEFAULT_WORKING_HOURS,
     lat: initialSettings?.lat ?? "",
     lng: initialSettings?.lng ?? "",
     whatsapp_number: initialSettings?.whatsapp_number ?? "",
@@ -101,6 +102,11 @@ export default function SettingsForm({ initialSettings }) {
           </div>
         ))}
       </div>
+
+      <WorkingHoursEditor
+        value={values.working_hours}
+        onChange={(workingHours) => updateField("working_hours", workingHours)}
+      />
 
       <div className="flex items-center gap-3">
         <button

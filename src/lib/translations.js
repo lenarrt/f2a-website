@@ -5,6 +5,15 @@ const translations = {
       products: "Produktet",
       contact: "Kontakti",
     },
+    days: {
+      mon: "E hene",
+      tue: "E marte",
+      wed: "E merkure",
+      thu: "E enjte",
+      fri: "E premte",
+      sat: "E shtune",
+      sun: "E diel",
+    },
     home: {
       heroCta: "Shiko produktet",
       contactCta: "Na kontaktoni",
@@ -26,6 +35,7 @@ const translations = {
       viewOnMap: "Shiko ne Google Maps",
       whatsapp: "Shkruani ne WhatsApp",
       follow: "Na ndiqni",
+      closed: "Mbyllur",
     },
     footer: {
       rights: "Te gjitha te drejtat e rezervuara.",
@@ -77,6 +87,15 @@ const translations = {
       products: "Products",
       contact: "Contact",
     },
+    days: {
+      mon: "Monday",
+      tue: "Tuesday",
+      wed: "Wednesday",
+      thu: "Thursday",
+      fri: "Friday",
+      sat: "Saturday",
+      sun: "Sunday",
+    },
     home: {
       heroCta: "View products",
       contactCta: "Contact us",
@@ -98,6 +117,7 @@ const translations = {
       viewOnMap: "View on Google Maps",
       whatsapp: "Message on WhatsApp",
       follow: "Follow us",
+      closed: "Closed",
     },
     footer: {
       rights: "All rights reserved.",
