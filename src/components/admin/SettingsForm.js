@@ -51,21 +51,23 @@ export default function SettingsForm({ initialSettings }) {
     setSaving(true);
     setSaved(false);
 
-    const supabase = createClient();
-    await supabase
-      .from("settings")
-      .upsert(
-        {
-          id: 1,
-          ...values,
-          lat: values.lat === "" ? null : Number(values.lat),
-          lng: values.lng === "" ? null : Number(values.lng),
-        },
-        { onConflict: "id" }
-      );
-
-    setSaving(false);
-    setSaved(true);
+    try {
+      const supabase = createClient();
+      await supabase
+        .from("settings")
+        .upsert(
+          {
+            id: 1,
+            ...values,
+            lat: values.lat === "" ? null : Number(values.lat),
+            lng: values.lng === "" ? null : Number(values.lng),
+          },
+          { onConflict: "id" }
+        );
+      setSaved(true);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (

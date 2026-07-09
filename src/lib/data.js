@@ -24,7 +24,7 @@ export const getProducts = cache(async function getProducts() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("products")
-    .select("*, category:categories(*)")
+    .select("*")
     .order("sort_order", { ascending: true });
   return data ?? [];
 });

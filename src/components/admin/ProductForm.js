@@ -14,7 +14,15 @@ const EMPTY = {
 
 export default function ProductForm({ categories, initialValues, onSave, onCancel }) {
   const { t } = useLanguage();
-  const [values, setValues] = useState({ ...EMPTY, ...initialValues });
+  const [values, setValues] = useState({
+    ...EMPTY,
+    ...initialValues,
+    // Optional DB fields (description, price) come back as null rather than
+    // "" when unset, which would otherwise overwrite the EMPTY defaults above.
+    name: initialValues?.name ?? "",
+    price: initialValues?.price ?? "",
+    description: initialValues?.description ?? "",
+  });
   const [saving, setSaving] = useState(false);
 
   function update(field, value) {
@@ -23,16 +31,24 @@ export default function ProductForm({ categories, initialValues, onSave, onCance
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (!values.name.trim() || !values.category_id) return;
+    const name = (values.name ?? "").trim();
+    if (!name || !values.category_id) return;
 
     setSaving(true);
-    await onSave({
-      ...values,
-      name: values.name.trim(),
-      price: values.price === "" ? null : Number(values.price),
-      description: values.description.trim() || null,
-    });
-    setSaving(false);
+    try {
+      // Only send actual product columns — `values` may also carry fields
+      // like a joined `category` object, `id`, or `created_at` when editing
+      // an existing product, none of which are valid in an insert/update.
+      await onSave({
+        name,
+        category_id: values.category_id,
+        image_url: values.image_url,
+        price: values.price === "" ? null : Number(values.price),
+        description: (values.description ?? "").trim() || null,
+      });
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
