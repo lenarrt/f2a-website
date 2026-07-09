@@ -87,14 +87,15 @@ create policy "admin write products" on products
 
 -- ---------------------------------------------------------------------------
 -- Storage buckets: "logos" and "products", both public-read.
--- Only authenticated users may upload/update/delete.
+-- Only authenticated users may upload/update/delete. Capped at 8MB per file
+-- and images only, matching the client-side check in the admin upload form.
 -- ---------------------------------------------------------------------------
-insert into storage.buckets (id, name, public)
-values ('logos', 'logos', true)
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('logos', 'logos', true, 8388608, array['image/*'])
 on conflict (id) do nothing;
 
-insert into storage.buckets (id, name, public)
-values ('products', 'products', true)
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('products', 'products', true, 8388608, array['image/*'])
 on conflict (id) do nothing;
 
 create policy "public read logos bucket" on storage.objects

@@ -22,8 +22,15 @@ export default function ImageUploadField({ bucket, value, onChange, label }) {
       const supabase = createClient();
       const url = await uploadImage(supabase, bucket, file);
       onChange(url);
-    } catch {
-      setError("Upload failed");
+    } catch (err) {
+      console.error("Image upload failed:", err);
+      if (err?.message === "FILE_TOO_LARGE") {
+        setError(t.admin.uploadTooLarge);
+      } else if (err?.message === "UPLOAD_TIMEOUT") {
+        setError(t.admin.uploadTimeout);
+      } else {
+        setError(err?.message || t.admin.uploadFailed);
+      }
     } finally {
       setUploading(false);
       event.target.value = "";
@@ -53,7 +60,7 @@ export default function ImageUploadField({ bucket, value, onChange, label }) {
         </div>
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100">
           {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
-          {uploading ? t.admin.saving : t.admin.uploadImage}
+          {uploading ? t.admin.uploadingImage : t.admin.uploadImage}
           <input
             type="file"
             accept="image/*"
