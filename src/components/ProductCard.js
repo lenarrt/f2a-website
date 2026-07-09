@@ -32,7 +32,7 @@ export default function ProductCard({ product }) {
         )}
         {product.price != null && (
           <p className="mt-auto pt-2 font-semibold text-orange-600">
-            {formatPrice(product.price)} €
+            {formatPrice(product.price)} den
           </p>
         )}
       </div>

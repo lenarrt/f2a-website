@@ -103,7 +103,7 @@ export default function ProductsManager({ categories, initialProducts }) {
                 </p>
                 <p className="truncate text-xs text-neutral-500">
                   {categoryName(product.category_id)}
-                  {product.price != null && ` · ${product.price} €`}
+                  {product.price != null && ` · ${product.price} den`}
                 </p>
               </div>
 
