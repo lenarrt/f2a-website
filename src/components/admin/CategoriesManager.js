@@ -78,6 +78,7 @@ export default function CategoriesManager({ initialCategories }) {
       <form onSubmit={handleAdd} className="flex gap-2">
         <input
           type="text"
+          required
           value={newName}
           onChange={(event) => setNewName(event.target.value)}
           placeholder={t.admin.name}
