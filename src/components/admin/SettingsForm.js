@@ -37,6 +37,7 @@ export default function SettingsForm({ initialSettings }) {
     whatsapp_number: initialSettings?.whatsapp_number ?? "",
     facebook_url: initialSettings?.facebook_url ?? "",
     instagram_url: initialSettings?.instagram_url ?? "",
+    show_offers: initialSettings?.show_offers ?? false,
   });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -109,6 +110,15 @@ export default function SettingsForm({ initialSettings }) {
         value={values.working_hours}
         onChange={(workingHours) => updateField("working_hours", workingHours)}
       />
+
+      <label className="flex items-center gap-2 text-sm font-medium text-neutral-700">
+        <input
+          type="checkbox"
+          checked={values.show_offers}
+          onChange={(event) => updateField("show_offers", event.target.checked)}
+        />
+        {t.admin.showOffers}
+      </label>
 
       <div className="flex items-center gap-3">
         <button

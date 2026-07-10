@@ -27,6 +27,7 @@ create table if not exists settings (
   whatsapp_number text,
   facebook_url text,
   instagram_url text,
+  show_offers boolean not null default false,
   updated_at timestamptz not null default now(),
   constraint settings_single_row check (id = 1)
 );
@@ -62,6 +63,24 @@ create table if not exists products (
 create index if not exists products_category_id_idx on products(category_id);
 
 -- ---------------------------------------------------------------------------
+-- offers (shown on the home page when settings.show_offers is true)
+-- ---------------------------------------------------------------------------
+create table if not exists offers (
+  id uuid primary key default gen_random_uuid(),
+  -- Linked offer: pulls name/image from this product at render time.
+  -- Standalone offer: product_id is null, uses title/image_url below instead.
+  product_id uuid references products(id) on delete cascade,
+  title text,
+  description text,
+  image_url text,
+  offer_text text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists offers_product_id_idx on offers(product_id);
+
+-- ---------------------------------------------------------------------------
 -- Row Level Security
 -- Public (anon) visitors can read everything. Only authenticated users
 -- (the single admin account, created manually in Supabase Auth) can write.
@@ -69,6 +88,7 @@ create index if not exists products_category_id_idx on products(category_id);
 alter table settings enable row level security;
 alter table categories enable row level security;
 alter table products enable row level security;
+alter table offers enable row level security;
 
 create policy "public read settings" on settings
   for select using (true);
@@ -83,6 +103,11 @@ create policy "admin write categories" on categories
 create policy "public read products" on products
   for select using (true);
 create policy "admin write products" on products
+  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+
+create policy "public read offers" on offers
+  for select using (true);
+create policy "admin write offers" on offers
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
 -- ---------------------------------------------------------------------------

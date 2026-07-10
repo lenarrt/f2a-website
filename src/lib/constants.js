@@ -16,6 +16,7 @@ export const PLACEHOLDER_SETTINGS = {
   whatsapp_number: null,
   facebook_url: null,
   instagram_url: null,
+  show_offers: false,
 };
 
 export const KURTISHI_SOLUTIONS_URL = "https://kurtishisolutions.com";

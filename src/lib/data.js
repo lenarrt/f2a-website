@@ -28,3 +28,12 @@ export const getProducts = cache(async function getProducts() {
     .order("sort_order", { ascending: true });
   return data ?? [];
 });
+
+export const getOffers = cache(async function getOffers() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("offers")
+    .select("*, product:products(name, image_url)")
+    .order("sort_order", { ascending: true });
+  return data ?? [];
+});
