@@ -24,6 +24,7 @@ const translations = {
       title: "Produktet",
       empty: "Nuk ka ende bashkpunetore.",
       noProductTypes: "Nuk ka ende produkte per kete bashkpunetor.",
+      more: "me shume",
     },
     contact: {
       title: "Kontakti dhe Lokacioni",
@@ -115,6 +116,7 @@ const translations = {
       title: "Products",
       empty: "No partners yet.",
       noProductTypes: "No products for this partner yet.",
+      more: "more",
     },
     contact: {
       title: "Contact & Location",
