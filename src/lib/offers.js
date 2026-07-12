@@ -1,11 +1,12 @@
 // Resolves what to display for an offer regardless of whether it's linked
-// to a product (pulls name/image from there) or standalone (uses its own
-// title/image_url) — so the public site can render both identically.
+// to a partner product (pulls the name from there — partner products have
+// no image) or standalone (uses its own title/image_url) — so the public
+// site can render both identically.
 export function resolveOfferDisplay(offer) {
-  if (offer.product_id) {
+  if (offer.partner_product_id) {
     return {
-      title: offer.product?.name ?? "",
-      image_url: offer.product?.image_url ?? null,
+      title: offer.partner_product?.name ?? "",
+      image_url: null,
     };
   }
   return {

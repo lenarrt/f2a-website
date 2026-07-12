@@ -4,15 +4,17 @@ import { useState } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
-export default function OfferForm({ products, initialValues, onSave, onCancel }) {
+export default function OfferForm({ partnerProducts, initialValues, onSave, onCancel }) {
   const { t } = useLanguage();
   const [mode, setMode] = useState(
-    initialValues && !initialValues.product_id && (initialValues.title || initialValues.image_url)
+    initialValues &&
+      !initialValues.partner_product_id &&
+      (initialValues.title || initialValues.image_url)
       ? "standalone"
       : "product"
   );
   const [values, setValues] = useState({
-    product_id: initialValues?.product_id ?? "",
+    partner_product_id: initialValues?.partner_product_id ?? "",
     title: initialValues?.title ?? "",
     description: initialValues?.description ?? "",
     image_url: initialValues?.image_url ?? null,
@@ -30,7 +32,7 @@ export default function OfferForm({ products, initialValues, onSave, onCancel })
       update("title", "");
       update("image_url", null);
     } else {
-      update("product_id", "");
+      update("partner_product_id", "");
     }
   }
 
@@ -40,7 +42,7 @@ export default function OfferForm({ products, initialValues, onSave, onCancel })
     const offerText = (values.offer_text ?? "").trim() || null;
 
     if (mode === "product") {
-      if (!values.product_id) return;
+      if (!values.partner_product_id) return;
     } else {
       if (!(values.title ?? "").trim()) return;
     }
@@ -50,14 +52,14 @@ export default function OfferForm({ products, initialValues, onSave, onCancel })
       await onSave(
         mode === "product"
           ? {
-              product_id: values.product_id,
+              partner_product_id: values.partner_product_id,
               title: null,
               image_url: null,
               description,
               offer_text: offerText,
             }
           : {
-              product_id: null,
+              partner_product_id: null,
               title: values.title.trim(),
               image_url: values.image_url,
               description,
@@ -106,16 +108,16 @@ export default function OfferForm({ products, initialValues, onSave, onCancel })
           </label>
           <select
             required
-            value={values.product_id}
-            onChange={(event) => update("product_id", event.target.value)}
+            value={values.partner_product_id}
+            onChange={(event) => update("partner_product_id", event.target.value)}
             className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-orange-600 focus:outline-none"
           >
             <option value="" disabled>
               {t.admin.selectProduct}
             </option>
-            {products.map((product) => (
-              <option key={product.id} value={product.id}>
-                {product.name}
+            {partnerProducts.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.partner?.name ? `${item.partner.name} — ${item.name}` : item.name}
               </option>
             ))}
           </select>

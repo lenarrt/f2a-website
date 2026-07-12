@@ -1,8 +1,8 @@
-import { getProducts, getOffers } from "@/lib/data";
+import { getPartnerProducts, getOffers } from "@/lib/data";
 import OffersManager from "@/components/admin/OffersManager";
 
 export default async function AdminOffersPage() {
-  const [products, offers] = await Promise.all([getProducts(), getOffers()]);
+  const [partnerProducts, offers] = await Promise.all([getPartnerProducts(), getOffers()]);
 
-  return <OffersManager products={products} initialOffers={offers} />;
+  return <OffersManager partnerProducts={partnerProducts} initialOffers={offers} />;
 }

@@ -1,6 +1,6 @@
-import { getCategories, getProducts, getSettings } from "@/lib/data";
+import { getPartners, getSettings } from "@/lib/data";
 import { withPlaceholderFallback } from "@/lib/constants";
-import ProductsExplorer from "@/components/ProductsExplorer";
+import PartnerShowcase from "@/components/PartnerShowcase";
 
 export async function generateMetadata() {
   const settings = withPlaceholderFallback(await getSettings());
@@ -11,14 +11,11 @@ export async function generateMetadata() {
 }
 
 export default async function ProductsPage() {
-  const [categories, products] = await Promise.all([
-    getCategories(),
-    getProducts(),
-  ]);
+  const partners = await getPartners();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <ProductsExplorer categories={categories} products={products} />
+      <PartnerShowcase partners={partners} />
     </div>
   );
 }

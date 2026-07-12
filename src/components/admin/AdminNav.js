@@ -10,8 +10,7 @@ export default function AdminNav() {
 
   const tabs = [
     { href: "/admin/settings", label: t.admin.settings },
-    { href: "/admin/categories", label: t.admin.categories },
-    { href: "/admin/products", label: t.admin.productsTab },
+    { href: "/admin/partners", label: t.admin.partnersTab },
     { href: "/admin/offers", label: t.admin.offersTab },
   ];
 

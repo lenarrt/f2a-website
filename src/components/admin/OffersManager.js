@@ -8,14 +8,14 @@ import { createClient } from "@/lib/supabase/client";
 import { resolveOfferDisplay } from "@/lib/offers";
 import OfferForm from "@/components/admin/OfferForm";
 
-export default function OffersManager({ products, initialOffers }) {
+export default function OffersManager({ partnerProducts, initialOffers }) {
   const { t } = useLanguage();
   const [offers, setOffers] = useState(initialOffers);
   const [adding, setAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
   const supabase = createClient();
-  const OFFER_SELECT = "*, product:products(name, image_url)";
+  const OFFER_SELECT = "*, partner_product:partner_products(name)";
 
   async function handleCreate(values) {
     const { data, error } = await supabase
@@ -67,7 +67,7 @@ export default function OffersManager({ products, initialOffers }) {
     <div className="max-w-3xl space-y-6">
       {adding ? (
         <OfferForm
-          products={products}
+          partnerProducts={partnerProducts}
           initialValues={{}}
           onSave={handleCreate}
           onCancel={() => setAdding(false)}
@@ -88,7 +88,7 @@ export default function OffersManager({ products, initialOffers }) {
           editingId === offer.id ? (
             <li key={offer.id} className="p-4">
               <OfferForm
-                products={products}
+                partnerProducts={partnerProducts}
                 initialValues={offer}
                 onSave={(values) => handleUpdate(offer.id, values)}
                 onCancel={() => setEditingId(null)}
@@ -139,7 +139,7 @@ export default function OffersManager({ products, initialOffers }) {
                         {display.title}
                       </p>
                       <p className="truncate text-xs text-neutral-500">
-                        {offer.product_id ? t.admin.linkToProduct : t.admin.standalone}
+                        {offer.partner_product_id ? t.admin.linkToProduct : t.admin.standalone}
                         {offer.offer_text && ` · ${offer.offer_text}`}
                       </p>
                     </div>

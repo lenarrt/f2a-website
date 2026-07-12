@@ -37,39 +37,40 @@ values (1, 'F2A', 'Materiale ndertimi dhe suvatim')
 on conflict (id) do nothing;
 
 -- ---------------------------------------------------------------------------
--- categories
+-- partners (distributor brands, e.g. Renova, Putzplas, Knauf)
 -- ---------------------------------------------------------------------------
-create table if not exists categories (
+create table if not exists partners (
   id uuid primary key default gen_random_uuid(),
   name text not null,
+  logo_url text,
   sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
--- products
+-- partner_products (simple product names a partner supplies, e.g.
+-- Knauf -> "Rigips", "Plaster", "Adhesive" — no image/price/description)
 -- ---------------------------------------------------------------------------
-create table if not exists products (
+create table if not exists partner_products (
   id uuid primary key default gen_random_uuid(),
-  category_id uuid references categories(id) on delete cascade,
+  partner_id uuid not null references partners(id) on delete cascade,
   name text not null,
-  price numeric(10, 2),
-  image_url text,
-  description text,
   sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
 
-create index if not exists products_category_id_idx on products(category_id);
+create index if not exists partner_products_partner_id_idx
+  on partner_products(partner_id);
 
 -- ---------------------------------------------------------------------------
 -- offers (shown on the home page when settings.show_offers is true)
 -- ---------------------------------------------------------------------------
 create table if not exists offers (
   id uuid primary key default gen_random_uuid(),
-  -- Linked offer: pulls name/image from this product at render time.
-  -- Standalone offer: product_id is null, uses title/image_url below instead.
-  product_id uuid references products(id) on delete cascade,
+  -- Linked offer: pulls the name from this partner product at render
+  -- time. Standalone offer: partner_product_id is null, uses the
+  -- title/image_url below instead.
+  partner_product_id uuid references partner_products(id) on delete cascade,
   title text,
   description text,
   image_url text,
@@ -78,7 +79,8 @@ create table if not exists offers (
   created_at timestamptz not null default now()
 );
 
-create index if not exists offers_product_id_idx on offers(product_id);
+create index if not exists offers_partner_product_id_idx
+  on offers(partner_product_id);
 
 -- ---------------------------------------------------------------------------
 -- Row Level Security
@@ -86,8 +88,8 @@ create index if not exists offers_product_id_idx on offers(product_id);
 -- (the single admin account, created manually in Supabase Auth) can write.
 -- ---------------------------------------------------------------------------
 alter table settings enable row level security;
-alter table categories enable row level security;
-alter table products enable row level security;
+alter table partners enable row level security;
+alter table partner_products enable row level security;
 alter table offers enable row level security;
 
 create policy "public read settings" on settings
@@ -95,14 +97,14 @@ create policy "public read settings" on settings
 create policy "admin write settings" on settings
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
-create policy "public read categories" on categories
+create policy "public read partners" on partners
   for select using (true);
-create policy "admin write categories" on categories
+create policy "admin write partners" on partners
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
-create policy "public read products" on products
+create policy "public read partner_products" on partner_products
   for select using (true);
-create policy "admin write products" on products
+create policy "admin write partner_products" on partner_products
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
 create policy "public read offers" on offers
@@ -111,9 +113,10 @@ create policy "admin write offers" on offers
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
 -- ---------------------------------------------------------------------------
--- Storage buckets: "logos" and "products", both public-read.
--- Only authenticated users may upload/update/delete. Capped at 8MB per file
--- and images only, matching the client-side check in the admin upload form.
+-- Storage buckets: "logos" (company logo) and "products" (partner logos
+-- and standalone offer images), both public-read. Only authenticated users
+-- may upload/update/delete. Capped at 8MB per file and images only,
+-- matching the client-side check in the admin upload form.
 -- ---------------------------------------------------------------------------
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('logos', 'logos', true, 8388608, array['image/*'])
