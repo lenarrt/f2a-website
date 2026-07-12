@@ -25,7 +25,7 @@ export default function PartnerCard({ partner, emptyLabel }) {
         {products.length === 0 ? (
           <p className="text-sm text-neutral-400">{emptyLabel}</p>
         ) : (
-          <ul className="space-y-1.5 text-sm text-neutral-600">
+          <ul className="max-h-64 space-y-1.5 overflow-y-auto pr-1 text-sm text-neutral-600">
             {products.map((product) => (
               <li key={product.id}>{product.name}</li>
             ))}
