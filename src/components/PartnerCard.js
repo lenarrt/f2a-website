@@ -1,11 +1,8 @@
 import Image from "next/image";
 import { Building2 } from "lucide-react";
 
-const VISIBLE_LIMIT = 10;
-
-export default function PartnerCard({ partner, emptyLabel, moreLabel }) {
+export default function PartnerCard({ partner, emptyLabel }) {
   const products = partner.partner_products ?? [];
-  const moreCount = products.length - VISIBLE_LIMIT;
 
   return (
     <div className="flex flex-col items-center rounded-lg border border-neutral-200 bg-white p-5 text-center">
@@ -28,18 +25,11 @@ export default function PartnerCard({ partner, emptyLabel, moreLabel }) {
         {products.length === 0 ? (
           <p className="text-sm text-neutral-400">{emptyLabel}</p>
         ) : (
-          <>
-            <ul className="always-scrollbar max-h-64 space-y-1.5 overflow-y-auto pr-1 text-sm text-neutral-600">
-              {products.map((product) => (
-                <li key={product.id}>{product.name}</li>
-              ))}
-            </ul>
-            {moreCount > 0 && (
-              <p className="mt-1.5 text-xs font-medium text-neutral-400">
-                +{moreCount} {moreLabel}
-              </p>
-            )}
-          </>
+          <ul className="always-scrollbar max-h-64 space-y-1.5 overflow-y-auto pr-1 text-sm text-neutral-600">
+            {products.map((product) => (
+              <li key={product.id}>{product.name}</li>
+            ))}
+          </ul>
         )}
       </div>
     </div>

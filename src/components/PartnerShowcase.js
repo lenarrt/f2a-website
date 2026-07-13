@@ -19,7 +19,6 @@ export default function PartnerShowcase({ partners }) {
               key={partner.id}
               partner={partner}
               emptyLabel={t.products.noProductTypes}
-              moreLabel={t.products.more}
             />
           ))}
         </div>
