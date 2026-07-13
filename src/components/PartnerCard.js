@@ -1,8 +1,11 @@
 import Image from "next/image";
 import { Building2 } from "lucide-react";
 
+const VISIBLE_LIMIT = 10;
+
 export default function PartnerCard({ partner, emptyLabel }) {
   const products = partner.partner_products ?? [];
+  const isTruncated = products.length > VISIBLE_LIMIT;
 
   return (
     <div className="flex flex-col items-center rounded-lg border border-neutral-200 bg-white p-5 text-center">
@@ -25,11 +28,16 @@ export default function PartnerCard({ partner, emptyLabel }) {
         {products.length === 0 ? (
           <p className="text-sm text-neutral-400">{emptyLabel}</p>
         ) : (
-          <ul className="always-scrollbar max-h-64 space-y-1.5 overflow-y-auto pr-1 text-sm text-neutral-600">
-            {products.map((product) => (
-              <li key={product.id}>{product.name}</li>
-            ))}
-          </ul>
+          <div className="relative">
+            <ul className="always-scrollbar max-h-64 space-y-1.5 overflow-y-auto pr-1 text-sm text-neutral-600">
+              {products.map((product) => (
+                <li key={product.id}>{product.name}</li>
+              ))}
+            </ul>
+            {isTruncated && (
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white to-transparent" />
+            )}
+          </div>
         )}
       </div>
     </div>
