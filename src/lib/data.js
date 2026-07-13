@@ -34,7 +34,7 @@ export const getOffers = cache(async function getOffers() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("offers")
-    .select("*, partner_product:partner_products(name)")
+    .select("*, partner_product:partner_products(name, partner:partners(logo_url))")
     .order("sort_order", { ascending: true });
   return data ?? [];
 });

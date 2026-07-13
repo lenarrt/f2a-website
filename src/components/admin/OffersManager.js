@@ -15,7 +15,7 @@ export default function OffersManager({ partnerProducts, initialOffers }) {
   const [editingId, setEditingId] = useState(null);
 
   const supabase = createClient();
-  const OFFER_SELECT = "*, partner_product:partner_products(name)";
+  const OFFER_SELECT = "*, partner_product:partner_products(name, partner:partners(logo_url))";
 
   async function handleCreate(values) {
     const { data, error } = await supabase
