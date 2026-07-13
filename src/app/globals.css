@@ -17,3 +17,25 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+/* Permanently visible (not hover/scroll-only) scrollbar for the partner
+   product list. Styling ::-webkit-scrollbar opts WebKit/Blink out of
+   macOS-style overlay scrollbars, so it renders as a persistent classic
+   bar — this covers desktop Chrome/Safari/Edge and Android Chrome.
+   scrollbar-width/-color do the same for Firefox. iOS Safari has no CSS
+   hook to force its touch-scroll indicator to stay visible — that's a
+   platform restriction with no workaround. */
+.always-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-neutral-300) transparent;
+}
+.always-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.always-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.always-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-neutral-300);
+  border-radius: 9999px;
+}
